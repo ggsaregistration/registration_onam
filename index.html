@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> GGSA Students Registration </title>
+  <style>
+    :root { --bg:#0b1020; --card:#12192e; --ink:#e9edf3; --muted:#9fb0c6; --accent:#3b82f6; --ok:#16a34a; --err:#ef4444; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,Helvetica,sans-serif;background:linear-gradient(120deg,var(--bg),#111827 60%);color:var(--ink)}
+    .wrap{max-width:880px;margin:auto;padding:28px}
+    h1{font-weight:800;letter-spacing:.3px;margin:8px 0 18px;font-size:clamp(22px,3.5vw,32px)}
+    p.sub{color:var(--muted);margin:0 0 22px}
+    form{background:radial-gradient(1200px 400px at -10% -30%,#1f2a44 0%,transparent 50%),
+          radial-gradient(1200px 400px at 110% 130%,#1f2a44 0%,transparent 50%),var(--card);
+         border:1px solid #2a3550;border-radius:18px;padding:22px;box-shadow:0 15px 40px rgba(0,0,0,.35)}
+    fieldset{border:1px dashed #334155;border-radius:14px;padding:16px;margin:0 0 18px}
+    legend{padding:0 8px;color:#cbd5e1}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-8{grid-column:span 8}
+    .col-12{grid-column:span 12}
+    @media (max-width:720px){.col-6,.col-4,.col-8{grid-column:span 12}}
+    label{display:block;font-size:12px;color:#cbd5e1;margin:0 0 6px}
+    input[type="text"],input[type="number"],input[type="tel"],input[type="file"],select{width:100%;background:#0f172a;color:var(--ink);border:1px solid #334155;border-radius:12px;padding:12px 12px;font-size:15px;outline:none}
+    input[type="file"]{padding:10px}
+    input::placeholder{color:#6b7280}
+    .hint{font-size:12px;color:#94a3b8;margin-top:6px}
+    .row{margin-bottom:10px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+    button{appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:600;cursor:pointer}
+    .btn{background:var(--accent);color:white}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .ghost{background:#0f172a;color:#d1d5db;border:1px solid #374151}
+    .status{margin-top:14px;border-radius:12px;padding:12px 14px;display:none}
+    .status.ok{display:block;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.5);color:#dcfce7}
+    .status.err{display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.5);color:#fee2e2}
+    .req{color:#ef4444}
+    .spinner{display:inline-block;inline-size:18px;block-size:18px;border:3px solid #94a3b8;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;vertical-align:-4px;margin-right:8px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    footer{margin:22px 0 8px;color:#8da2be;font-size:12px;text-align:center}
+    .small{font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Student Registration</h1>
+    <p class="sub">All fields are <span class="req">mandatory</span>. Files are uploaded with the form.</p>
+
+    <form id="studentForm" enctype="multipart/form-data" novalidate>
+      <!-- Auto Timestamp (hidden) -->
+      <input type="hidden" name="Timestamp" id="Timestamp" />
+
+      <fieldset>
+        <legend>Student Details</legend>
+        <div class="grid">
+          <div class="col-8">
+            <label for="studentName">Student Name</label>
+            <input required id="studentName" name="studentName" type="text" placeholder="Full name" />
+          </div>
+          <div class="col-4">
+            <label for="age">Age</label>
+            <input required id="age" name="age" type="number" min="1" max="25" placeholder="e.g., 14" />
+          </div>
+          <div class="col-6">
+            <label for="className">Class</label>
+            <input required id="className" name="className" type="text" placeholder="e.g., 8th" />
+          </div>
+          <div class="col-6">
+            <label for="school">School</label>
+            <input required id="school" name="school" type="text" placeholder="School name" />
+          </div>
+          <div class="col-12">
+            <label for="place">Place</label>
+            <input required id="place" name="place" type="text" placeholder="City / Area" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Parents / Guardians</legend>
+        <div class="grid">
+          <div class="col-6">
+            <label for="fatherName">Father's Name</label>
+            <input required id="fatherName" name="fatherName" type="text" placeholder="Father's full name" />
+          </div>
+          <div class="col-6">
+            <label for="fatherOcc">Father's Occupation</label>
+            <input required id="fatherOcc" name="fatherOcc" type="text" placeholder="Occupation" />
+          </div>
+          <div class="col-6">
+            <label for="fatherWhats">Father WhatsApp Number</label>
+            <input required id="fatherWhats" name="fatherWhats" type="tel" inputmode="numeric" pattern="\d{10,15}" placeholder="10-15 digits" />
+            <div class="hint">Digits only, no spaces. Example: 9876543210</div>
+          </div>
+
+          <div class="col-6">
+            <label for="motherName">Mother's Name</label>
+            <input required id="motherName" name="motherName" type="text" placeholder="Mother's full name" />
+          </div>
+          <div class="col-6">
+            <label for="motherocc">Mother's Occupation</label>
+            <input required id="motherocc" name="motherocc" type="text" placeholder="Occupation" />
+          </div>
+          <div class="col-6">
+            <label for="motherWhats">Mother WhatsApp Number</label>
+            <input required id="motherWhats" name="motherWhats" type="tel" inputmode="numeric" pattern="\d{10,15}" placeholder="10-15 digits" />
+            <div class="hint">Digits only, no spaces. Example: 9876543210</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Fees</legend>
+        <div class="grid">
+          <div class="col-4">
+            <label for="regFeePaid">Registration Fee (₹)</label>
+            <input required id="regFeePaid" name="regFeePaid" type="number" min="0" step="1" placeholder="e.g., 500" />
+          </div>
+          <div class="col-4">
+            <label for="feeStructure">Fee Structure (₹)</label>
+            <input required id="feeStructure" name="feeStructure" type="number" min="0" step="1" placeholder="Total fees" />
+          </div>
+          <div class="col-4">
+            <label for="feePaid">Fee Paid So Far (₹)</label>
+            <input required id="feePaid" name="feePaid" type="number" min="0" step="1" placeholder="Amount paid" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Uploads</legend>
+        <div class="grid">
+          <div class="col-6">
+            <label for="studentPhoto">Student Photo</label>
+            <input required id="studentPhoto" name="studentPhoto" type="file" accept="image/*" />
+            <div class="hint">Accepts JPG/PNG/HEIC etc. Max size per your app settings.</div>
+          </div>
+          <div class="col-6">
+            <label for="feeScreenshot">Fee Payment Screenshot / Receipt</label>
+            <input required id="feeScreenshot" name="feeScreenshot" type="file" accept="image/*,application/pdf" />
+            <div class="hint">Accepts image or PDF.</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="row small">
+        <label>
+          <input required id="declaration" name="declaration" type="checkbox" value="Yes" />
+          I hereby declare that the above information is true and correct to the best of my knowledge.
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="submitBtn" class="btn" type="submit">Submit</button>
+        <button class="ghost" type="reset">Reset</button>
+      </div>
+
+      <div id="status" class="status" role="alert" aria-live="polite"></div>
+    </form>
+
+    <footer>
+      <div>© <span id="y"></span> • Student Registration</div>
+    </footer>
+  </div>
+
+  <script>
+    // === CONFIG ===
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxlClkICDcetgwKQqR1d_qN0kI0COmlVd63UluGhowYay19-2nlNM5gUKU8eOYLFz0/exec";
+
+    // Utility: set current year + timestamp
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function isoTimestampInIST() {
+      // Convert to Asia/Kolkata (IST) string
+      try {
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        }).format(new Date());
+      } catch (e) {
+        // Fallback to local ISO string
+        return new Date().toISOString();
+      }
+    }
+
+    const form = document.getElementById('studentForm');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Front-end validation
+      if (!form.reportValidity()) {
+        showStatus('Please fill all required fields correctly.', true);
+        return;
+      }
+
+      // Stamp timestamp field
+      document.getElementById('Timestamp').value = isoTimestampInIST();
+
+      // Build FormData (includes files)
+      const fd = new FormData(form);
+
+      // Disable while sending
+      setLoading(true);
+      showStatus('Submitting…', false, true);
+
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          mode: 'cors',
+          body: fd,
+        });
+
+        // Try to parse JSON; if not, handle as text.
+        let ok = res.ok;
+        let data = null;
+        let text = '';
+        try {
+          data = await res.json();
+        } catch (_) {
+          text = await res.text();
+        }
+
+        if (ok) {
+          showStatus('✅ Submitted successfully.' + (data ? ` Message: ${JSON.stringify(data)}` : ''), false);
+          form.reset();
+        } else {
+          showStatus('❌ Submission failed. ' + (data ? JSON.stringify(data) : text || res.statusText), true);
+        }
+      } catch (err) {
+        showStatus('❌ Network or server error: ' + (err?.message || err), true);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      submitBtn.innerHTML = isLoading ? '<span class="spinner"></span>Submitting…' : 'Submit';
+    }
+
+    function showStatus(msg, isError=false, isInfo=false){
+      statusEl.textContent = msg;
+      statusEl.className = 'status ' + (isError ? 'err' : 'ok');
+      if (isInfo) statusEl.className = 'status ok';
+      statusEl.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
